@@ -1,10 +1,14 @@
-# This project is maintained
+# This project is **NOT** maintained anymore
 
 Took over from previous owner because [the old repo](https://github.com/babariviere/flutter_sms) isn't maintained.
 
 ## Reason I took over
 
 I am making an SMS app (that will be open source when it is more stable) and I need a good package for all the CRUD actions that I need to do with my messages. 
+
+## Reason I am letting go
+
+I wanted to maintain this flutter library since I was building my own sms application but life came in between. Sorry for not letting you know sooner. I hope someone will fork this and extend upon it, as I wanted to do.
 
 # Flutter SMS
 
