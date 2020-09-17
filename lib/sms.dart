@@ -143,7 +143,8 @@ class SmsMessage implements Comparable<SmsMessage> {
   /// Get message kind
   SmsMessageKind get kind => this._kind;
 
-  Stream<SmsMessageState> get onStateChanged => _stateStreamController.stream;
+  Stream<SmsMessageState> get onStateChanged =>
+      _stateStreamController.stream.asBroadcastStream();
 
   /// Set message kind
   set kind(SmsMessageKind kind) => this._kind = kind;
@@ -352,7 +353,8 @@ class SmsSender {
     return msg;
   }
 
-  Stream<SmsMessage> get onSmsDelivered => _deliveredStreamController.stream;
+  Stream<SmsMessage> get onSmsDelivered =>
+      _deliveredStreamController.stream.asBroadcastStream();
 
   void _onSmsStateChanged(dynamic stateChange) {
     int id = stateChange['sentId'];
@@ -521,12 +523,12 @@ class SimCard {
   String imei;
   SimCardState state;
 
-  SimCard({
-    @required this.slot,
-    @required this.imei,
-    this.state = SimCardState.Unknown
-  }) : assert(slot != null),
-       assert(imei != null);
+  SimCard(
+      {@required this.slot,
+      @required this.imei,
+      this.state = SimCardState.Unknown})
+      : assert(slot != null),
+        assert(imei != null);
 
   SimCard.fromJson(Map map) {
     if (map.containsKey('slot')) {
@@ -536,7 +538,7 @@ class SimCard {
       this.imei = map['imei'];
     }
     if (map.containsKey('state')) {
-      switch(map['state']) {
+      switch (map['state']) {
         case 0:
           this.state = SimCardState.Unknown;
           break;
@@ -560,11 +562,9 @@ class SimCard {
   }
 }
 
-
 //added by Geordy Van Cutsem
 class SmsRemover {
   static const platform = const MethodChannel(METHOD_CHANNEL_REMOVE_SMS);
-
 
   Future<bool> removeSmsById(int id, int threadId) async {
     Map arguments = {};
@@ -574,7 +574,7 @@ class SmsRemover {
     try {
       final bool result = await platform.invokeMethod('removeSms', arguments);
       finalResult = result;
-    } catch (e){
+    } catch (e) {
       print(e);
     }
 
@@ -601,7 +601,7 @@ class SimCardsProvider {
     final simCards = new List<SimCard>();
 
     dynamic response = await _channel.invokeMethod('getSimCards', null);
-    for(Map map in response) {
+    for (Map map in response) {
       simCards.add(new SimCard.fromJson(map));
     }
 
